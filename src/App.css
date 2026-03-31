@@ -1,0 +1,46 @@
+body {
+  margin: 0;
+  background: radial-gradient(circle at center, #0a0a0a, #000);
+  font-family: Arial, sans-serif;
+}
+
+.App {
+  text-align: center;
+  color: #ffd580;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h1 {
+  font-size: 2.8rem;
+  margin-bottom: 20px;
+}
+
+img {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+img:hover {
+  transform: scale(1.08);
+}
+
+p {
+  color: #aaa;
+}
+
+h2 {
+  color: #ffae00;
+  animation: glow 1s infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 5px #ff7b00;
+  }
+  to {
+    text-shadow: 0 0 25px #ffcc00;
+  }
+}
