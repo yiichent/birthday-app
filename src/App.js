@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from "react";
 import { useState, useEffect } from "react";
 import "./App.css";
 import confetti from "canvas-confetti";
@@ -5,7 +6,7 @@ import confetti from "canvas-confetti";
 function App() {
   const [stage, setStage] = useState(0);
 
-  const blowCandle = () => {
+  const blowCandle = useCallback(() => {
     if (stage === 0) {
       setStage(1);
 
@@ -15,7 +16,7 @@ function App() {
         setStage(2);
       }, 1200);
     }
-  };
+  }, [stage]);
 
   // 🎤 Mic detection
   // eslint-disable-next-line
