@@ -16,7 +16,6 @@ function App() {
     }, 1200);
   }, [stage]);
 
-  // 🎤 Mic detection
   useEffect(() => {
     let audioContext;
     let analyser;
@@ -62,7 +61,7 @@ function App() {
       if (animationId) cancelAnimationFrame(animationId);
       if (audioContext) audioContext.close();
     };
-  }, [blowCandle]); // ✅ FIX HERE
+  }, [blowCandle]);
 
   return (
     <div className="App">
