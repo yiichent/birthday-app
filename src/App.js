@@ -6,24 +6,23 @@ function App() {
   const [stage, setStage] = useState(0);
 
   const blowCandle = useCallback(() => {
-    if (stage === 0) {
-      setStage(1);
+    if (stage !== 0) return;
 
-      confetti();
+    setStage(1);
+    confetti();
 
-      setTimeout(() => {
-        setStage(2);
-      }, 1200);
-    }
+    setTimeout(() => {
+      setStage(2);
+    }, 1200);
   }, [stage]);
 
   // 🎤 Mic detection
-  // eslint-disable-next-line
   useEffect(() => {
     let audioContext;
     let analyser;
     let microphone;
     let dataArray;
+    let animationId;
 
     navigator.mediaDevices
       .getUserMedia({ audio: true })
@@ -50,7 +49,7 @@ function App() {
             blowCandle();
           }
 
-          requestAnimationFrame(detectSound);
+          animationId = requestAnimationFrame(detectSound);
         };
 
         detectSound();
@@ -58,7 +57,12 @@ function App() {
       .catch(() => {
         console.log("Mic denied");
       });
-  }, []);
+
+    return () => {
+      if (animationId) cancelAnimationFrame(animationId);
+      if (audioContext) audioContext.close();
+    };
+  }, [blowCandle]); // ✅ FIX HERE
 
   return (
     <div className="App">
