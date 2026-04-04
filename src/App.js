@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import "./App.css";
 import confetti from "canvas-confetti";
 
@@ -183,4 +183,5 @@ function App() {
 }
 
 export default App;
+
 
