@@ -4,6 +4,8 @@ import confetti from "canvas-confetti";
 
 function App() {
   const [stage, setStage] = useState(0);
+  const [giftVisible, setGiftVisible] = useState(false);
+  const [giftOpened, setGiftOpened] = useState(false);
   const songPlayedRef = useRef(false);
   const audioContextRef = useRef(null);
 
@@ -73,6 +75,16 @@ function App() {
     playBirthdaySong();
   }, [stage, playBirthdaySong]);
 
+  const handleClaimGift = useCallback(() => {
+    if (stage !== 2) return;
+    setGiftVisible(true);
+  }, [stage]);
+
+  const openGiftBox = useCallback(() => {
+    if (!giftVisible) return;
+    setGiftOpened(true);
+  }, [giftVisible]);
+
   useEffect(() => {
     let audioContext;
     let analyser;
@@ -139,10 +151,10 @@ function App() {
           <div className="welcome-box">
             <p className="mini-title">Birthday party incoming</p>
             <h1>
-              Happy Birthday, <span className="name">[Name]</span>!
+              Happy Birthday, <span className="name">Mummy</span>!
             </h1>
             <p className="landing-text">
-              Click the button to enter the main page and see your cake with cute pixel decorations.
+              Click the button to enter the party room for your surprise.
             </p>
             <button className="enter-button" type="button" onClick={enterParty}>
               Open the party room
@@ -151,30 +163,50 @@ function App() {
         </div>
       ) : (
         <div className="card">
+          <div className="sprinkle sprinkle-left" />
+          <div className="sprinkle sprinkle-right" />
           <p className="hero-title">Birthday Celebration</p>
           <h1>
-            Happy Birthday, <span className="name">[Name]</span>!
+            Happy Birthday, <span className="name">Mummy</span>!
           </h1>
-          <p className="subtitle">Blow the candle to claim your wish and see the surprise.</p>
+          <p className="subtitle">Make a wish and blow the candle.</p>
 
           <button className={`cake-card ${stage === 2 ? "cake-celebrate" : ""}`} onClick={blowCandle} type="button">
             {stage === 0 && <img src="/cake-fire.png" alt="cake with candle" />}
             {stage === 1 && <img src="/cake-fire.png" alt="cake with candle" />}
             {stage === 2 && <img src="/cake-off.png" alt="cake without flame" />}
-            <span className="pixel-tag">Click to blow</span>
           </button>
 
           <div className="controls">
-            {stage === 1 && <p>Blow the candle to claim your wish.</p>}
             {stage === 2 && <h2>✨ Wish granted ✨</h2>}
-            {stage === 2 && (
-              <p className="special-message">
-                Thank you for being someone awesome to me!!
-              </p>
+            {stage === 2 && !giftVisible && (
+              <button className="music-button" onClick={handleClaimGift} type="button">
+                Claim Gift
+              </button>
             )}
-            <button className="music-button" onClick={playBirthdaySong} type="button">
-              Play the birthday song
-            </button>
+            {stage === 2 && giftVisible && (
+              <>
+                <button
+                  className={`gift-box ${giftOpened ? "opened" : ""}`}
+                  onClick={openGiftBox}
+                  type="button"
+                  aria-label="Gift box"
+                >
+                  <span className="gift-ribbon" />
+                  <span className="gift-top" />
+                  <span className="gift-label">Tap to open</span>
+                </button>
+                {giftOpened && (
+                  <div className="gift-letter-panel">
+                    <div className="gift-letter-sheet">
+                      <div className="gift-letter-text">
+                        Thank you for being someone awesome to me!!
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       )}
